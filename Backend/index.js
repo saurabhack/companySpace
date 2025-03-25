@@ -1,11 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
-
-
+import router from "./router/contact.router.js";
 
 const app=express()
+app.use(express.json())
 
-mongoose.connection('mongodb://127.0.0.1:27017/companySpace').then(()=>{
+app.use("/",router)
+
+mongoose.connect('mongodb://127.0.0.1:27017/companySpace').then(()=>{
     console.log("mongodb is successfully connected")
 }).catch(()=>{
     console.error("something went wrong with mongodb ")
