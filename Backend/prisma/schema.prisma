@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model company{
+  id Int @id @default(autoincrement())
+  companyName String
+  companyEmail String
+  companyAddress String?
+  companyType String
+  password String
+  admins admin[]
+  employees employees[]
+}
+
+model contact{
+  id Int @id @default(autoincrement())
+  fullName String
+  email String
+  phoneNumber Int 
+  subject String
+  message String
+}
+
+model admin{
+  id Int @id @default(autoincrement())
+  company company @relation(fields: [company_id] , references: [id], onDelete: Cascade)
+  company_id Int
+  fullName String
+  workEmail String
+  password String
+}
+
+enum EmployeeStatus {
+  ACTIVE
+  ON_LEAVE
+  RESIGNED
+  TERMINATED
+}
+
+
+model employees{
+  id Int @id @default(autoincrement())
+  company company @relation(fields: [company_id],references: [id],onDelete: Cascade,onUpdate: Cascade)
+  company_id Int
+  role String 
+  name String
+  experience String?
+  salary String?
+  email String
+  designation String?
+  department String?
+  employeeCode String?
+  status EmployeeStatus?
+  address String?
+  dob DateTime?
+  profilePicture String?
+  reportingTo Int?
+  tasks task[]
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+model task {
+  id          Int        @id @default(autoincrement())
+  title       String
+  description String
+  status      TaskStatus @default(PENDING)
+  duedate     DateTime
+  parentId    Int?
+  parent      task?      @relation("subTasks", fields: [parentId], references: [id])
+  subTasks    task[]     @relation("subTasks")
+  assignTo    Int
+  employees   employees  @relation(fields: [assignTo], references: [id])
+  completed Boolean @default(false)
+  department String
+}

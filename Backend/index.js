@@ -1,18 +1,15 @@
 import express from "express";
-import mongoose from "mongoose";
 import router from "./router/contact.router.js";
-
+import cookieParser from "cookie-parser";
+import 'dotenv/config'
+import authRouter from "./router/auth.router.js";
 const app=express()
 app.use(express.json())
-
+app.use(cookieParser())
 app.use("/",router)
-
-mongoose.connect('mongodb://127.0.0.1:27017/companySpace').then(()=>{
-    console.log("mongodb is successfully connected")
-}).catch(()=>{
-    console.error("something went wrong with mongodb ")
-})
-
-app.listen(3000,()=>{
+app.use('/auth',authRouter)
+const port=process.env.PORT
+app.listen(port,()=>{
     console.log("http://localhost:3000")
 })
+//7796426783
