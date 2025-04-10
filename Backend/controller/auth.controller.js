@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import prisma from "../DB/db.config.js";
 import { setUser } from "../service/auth.service.js";
 
-// Register Company
+
 export async function register(req, res) {
   const { companyName, companyType, companyEmail, password } = req.body;
   console.log("Register Request:", req.body);
@@ -48,7 +48,7 @@ export async function register(req, res) {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+      maxAge: 7 * 24 * 60 * 60 * 1000 
     });
 
     return res.status(201).json({
@@ -63,7 +63,7 @@ export async function register(req, res) {
   }
 }
 
-// Login Company
+
 export async function login(req, res) {
   const { companyEmail, password } = req.body;
 
@@ -120,7 +120,6 @@ export async function login(req, res) {
   }
 }
 
-// Logout Company
 export async function logOut(req, res) {
   try {
     res.clearCookie("token", {
