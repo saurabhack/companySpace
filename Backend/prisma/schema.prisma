@@ -67,8 +67,9 @@ model employees{
   dob DateTime?
   profilePicture String?
   reportingTo Int?
-  tasks task[]
+  tasks task[]?
   password String
+  totalLeaves Int?
 }
 
 enum TaskStatus {
@@ -77,6 +78,7 @@ enum TaskStatus {
   COMPLETED
   CANCELLED
 }
+
 
 model task {
   id          Int        @id @default(autoincrement())
